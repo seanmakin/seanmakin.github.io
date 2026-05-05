@@ -17,13 +17,9 @@
       --muted:     #444444;
       --text:      #c8c8c8;
       --text-dim:  #888888;
-      --accent:    #c8c8c8;
-      --white:     #c8c8c8;
       --font:      'DM Sans', sans-serif;
       --ease:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-
-    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
@@ -56,32 +52,19 @@
     }
 
     .logo {
-      font-weight: 200;
-      font-size: 1rem;
-      letter-spacing: 0.28em;
-      color: var(--text);
-      text-transform: uppercase;
+      font-weight: 200; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase;
     }
-    .logo b { font-weight: 400; color: var(--text); letter-spacing: 0.2em; }
+    .logo b { font-weight: 400; letter-spacing: 0.2em; }
 
     nav { display: flex; gap: 32px; align-items: center; }
     nav a {
-      font-size: 0.8rem;
-      font-weight: 300;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color 0.25s;
+      font-size: 0.8rem; font-weight: 300; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text-dim);
+      text-decoration: none; transition: color 0.25s;
     }
     nav a:hover { color: var(--text); }
 
-    .nav-icon {
-      display: flex;
-      align-items: center;
-      color: var(--text-dim);
-      transition: color 0.25s;
-    }
+    .nav-icon { display: flex; align-items: center; color: var(--text-dim); transition: color 0.25s; }
     .nav-icon:hover { color: var(--text); }
 
     /* ── GALLERY WRAPPER (80% Width) ── */
@@ -91,96 +74,65 @@
       margin: 0 auto;   
     }
 
-    .gallery-meta {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 28px;
-    }
+    .gallery-meta { margin-bottom: 28px; }
     .gallery-label {
-      font-size: 0.75rem;
-      font-weight: 300;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--text-dim);
+      font-size: 0.75rem; font-weight: 300; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--text-dim);
     }
 
-    /* ── GRID SYSTEM ── */
+    /* ── SIMPLE GRID ── */
     .grid { 
       display: grid;
       grid-template-columns: repeat(3, 1fr); 
-      grid-auto-flow: dense; 
       gap: 12px; 
     }
 
     .grid-item {
       position: relative;
-      overflow: hidden;
       cursor: pointer;
       background: var(--surface);
-      aspect-ratio: 4 / 3; /* Reserved space to prevent collapsing */
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+      transform: translateY(15px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
     }
 
-    .grid-item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Wide images span 2 columns */
-    .grid-item.wide { 
-      grid-column: span 2; 
-      aspect-ratio: 2 / 1; 
-    }
-
-    @media (max-width: 860px) { 
-      .grid { grid-template-columns: repeat(2, 1fr); } 
-      .grid-item.wide { grid-column: span 2; }
-    }
-
-    @media (max-width: 500px) { 
-      .grid { grid-template-columns: 1fr; } 
-      .grid-item.wide { grid-column: span 1; aspect-ratio: 4 / 3; }
-      header { padding: 20px 5%; }
-      #gallery-wrap { width: 90%; }
-    }
+    .grid-item.visible { opacity: 1; transform: translateY(0); }
 
     .grid-item img {
       display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover; 
-      transition: transform 0.65s var(--ease), filter 0.35s;
-      filter: brightness(0.88) saturate(0.88);
+      height: auto; /* Reverted: Height is dictated by the image file */
+      filter: brightness(0.9);
+      transition: transform 0.6s var(--ease), filter 0.4s;
     }
-    .grid-item:hover img { transform: scale(1.03); filter: brightness(1) saturate(1); }
+    .grid-item:hover img { transform: scale(1.02); filter: brightness(1); }
 
     .grid-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(5,5,5,0.68) 0%, transparent 46%);
+      background: linear-gradient(to top, rgba(5,5,5,0.5) 0%, transparent 40%);
       opacity: 0;
       transition: opacity 0.3s;
       display: flex;
       align-items: flex-end;
-      padding: 14px 16px;
+      padding: 12px;
     }
     .grid-item:hover .grid-overlay { opacity: 1; }
-    .grid-overlay span {
-      font-size: 0.85rem;
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      color: var(--text);
+    .grid-overlay span { font-size: 0.8rem; font-weight: 300; color: var(--text); }
+
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 550px) { 
+      .grid { grid-template-columns: 1fr; }
+      #gallery-wrap { width: 90%; }
+      header { padding: 20px 5%; }
     }
 
-    /* ── LIGHTBOX (Increased Viewport) ── */
+    /* ── LIGHTBOX ── */
     .lightbox {
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: rgba(5,5,5,0.97);
+      background: rgba(5,5,5,0.98);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -195,71 +147,37 @@
       flex-direction: column;
       align-items: center;
       gap: 14px;
-      max-width: 98vw; 
+      width: 95%;
     }
     .lb-img {
       max-width: 100%;
-      max-height: 90vh; 
+      max-height: 85vh; 
       object-fit: contain;
-      display: block;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.7);
-      transform: scale(0.97);
-      transition: transform 0.35s var(--ease);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
     }
-    .lightbox.open .lb-img { transform: scale(1); }
 
-    .lb-caption {
-      font-size: 0.9rem;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      color: var(--text-dim);
-    }
-    .lb-counter {
-      font-size: 0.72rem;
-      font-weight: 300;
-      letter-spacing: 0.25em;
-      color: var(--text-dim);
-      opacity: 0.7;
-    }
+    .lb-caption { font-size: 0.9rem; font-weight: 300; letter-spacing: 0.1em; color: var(--text-dim); }
+    .lb-counter { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-dim); opacity: 0.6; }
 
     .lb-close {
-      position: fixed;
-      top: 26px; right: 40px;
-      background: none; border: none;
-      color: var(--text-dim);
-      font-family: var(--font);
-      font-size: 0.78rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      cursor: pointer;
+      position: fixed; top: 25px; right: 30px;
+      background: none; border: none; color: var(--text-dim);
+      font-family: var(--font); font-size: 0.8rem; letter-spacing: 0.2em;
+      text-transform: uppercase; cursor: pointer;
     }
 
     .lb-nav {
-      position: fixed;
-      top: 50%; transform: translateY(-50%);
-      background: none; border: 1px solid var(--muted);
-      color: var(--text-dim);
-      width: 44px; height: 44px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: none; border: 1px solid var(--border);
+      color: var(--text-dim); width: 40px; height: 40px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
     }
     .lb-nav.prev { left: 20px; }
     .lb-nav.next { right: 20px; }
 
-    /* ── FOOTER (80% Width) ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 30px 0;
-      width: 80%;
-      margin: 0 auto;
-    }
-    .footer-text {
-      font-size: 0.72rem;
-      font-weight: 300;
-      letter-spacing: 0.28em;
-      color: var(--text-dim);
-      text-transform: uppercase;
-    }
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 30px 0; width: 80%; margin: 0 auto; }
+    .footer-text { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; }
   </style>
 </head>
 <body>
@@ -304,29 +222,28 @@
     { file: "DSC_0795-Edit 3000px.jpg", title: "Canal" },
     { file: "DSC_5583-Edit 3000px.jpg", title: "Withered" },
     { file: "DSC_6096-Edit 3000px.jpg", title: "Sticks" },
-    { file: "DSC_6266-Pano-Edit 3000px.jpg", title: "Over The Hills", wide: true },
+    { file: "DSC_6266-Pano-Edit 3000px.jpg", title: "Over The Hills" },
     { file: "DSC_6906-Edit 3000px.jpg", title: "Tall" },
     { file: "DSC_6978-Edit 3000px.jpg", title: "Kermits" },
     { file: "DSC_7135-Edit 3000px.jpg", title: "Sugarloaf" },
     { file: "DSC_7179-Edit 3000px.jpg", title: "Awakening" },
-    { file: "DSC_7534-Pano-Edit 3000px.jpg", title: "All That Glitters Is Gold", wide: true },
+    { file: "DSC_7534-Pano-Edit 3000px.jpg", title: "All That Glitters Is Gold" },
     { file: "DSC_7940-Edit 3000px.jpg", title: "The Core" },
     { file: "DSC_9011-Edit 3000px.jpg", title: "Pressure" },
     { file: "DSC0264-Edit 3000px.jpg", title: "Precarious" },
-    { file: "DSC8770-Pano 3000px.jpg", title: "Lonesome", wide: true },
+    { file: "DSC8770-Pano 3000px.jpg", title: "Lonesome" },
     { file: "DSC9334-Edit 3000px.jpg", title: "Misty Mountains" }
   ];
 
   const IMAGE_DIR = "images/";
   const grid = document.getElementById('grid');
 
-  PHOTOS.forEach(({ file, title, wide }, i) => {
-    // encodeURIComponent handles spaces and special characters in filenames
-    const src = IMAGE_DIR + encodeURIComponent(file);
+  PHOTOS.forEach(({ file, title }, i) => {
     const item = document.createElement('div');
+    item.className = 'grid-item';
     
-    item.className = wide ? 'grid-item wide' : 'grid-item';
-    item.dataset.idx = i;
+    // We still encode the URI to handle the spaces in your filenames
+    const src = IMAGE_DIR + encodeURIComponent(file);
 
     item.innerHTML = `
       <img src="${src}" alt="${title}" loading="lazy" />
@@ -335,10 +252,10 @@
     item.addEventListener('click', () => openLightbox(i));
     grid.appendChild(item);
 
-    // Fade-in animation
+    // Staggered fade in
     setTimeout(() => {
       requestAnimationFrame(() => item.classList.add('visible'));
-    }, (i % 3) * 65 + 50);
+    }, (i % 3) * 80 + 50);
   });
 
   // Lightbox Logic
@@ -362,7 +279,6 @@
 
   function showPhoto() {
     const { file, title } = PHOTOS[lbIndex];
-    // Encode here as well to ensure lightbox images load
     lbImg.src = IMAGE_DIR + encodeURIComponent(file);
     lbCaption.textContent = title;
     lbCounter.textContent = `${lbIndex + 1} / ${PHOTOS.length}`;
@@ -372,6 +288,8 @@
   document.getElementById('lb-prev').addEventListener('click', () => { lbIndex = (lbIndex - 1 + PHOTOS.length) % PHOTOS.length; showPhoto(); });
   document.getElementById('lb-next').addEventListener('click', () => { lbIndex = (lbIndex + 1) % PHOTOS.length; showPhoto(); });
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+  // Keyboard support
   document.addEventListener('keydown', e => {
     if (!lightbox.classList.contains('open')) return;
     if (e.key === 'Escape') closeLightbox();
