@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | Sean Makin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0a;
+      --surface:   #111111;
+      --border:    #252525;
+      --muted:     #444444;
+      --text:      #c8c8c8;
+      --text-dim:  #888888;
+      --font:      'DM Sans', sans-serif;
+      --ease:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 26px 10%; 
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.97) 55%, transparent);
+    }
+
+    .logo {
+      font-weight: 200; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase;
+    }
+    .logo b { font-weight: 400; letter-spacing: 0.2em; }
+
+    nav { display: flex; gap: 32px; align-items: center; }
+    nav a {
+      font-size: 0.8rem; font-weight: 300; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text-dim);
+      text-decoration: none; transition: color 0.25s;
+    }
+    nav a:hover { color: var(--text); }
+
+    /* ── CONTENT WRAPPER ── */
+    .content-wrap { 
+      padding: 160px 0 100px; 
+      width: 80%;       
+      margin: 0 auto;   
+      max-width: 1200px;
+    }
+
+    .section {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 80px;
+      margin-bottom: 120px;
+      align-items: start;
+    }
+
+    .meta-label {
+      font-size: 0.75rem; font-weight: 300; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--text-dim);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .text-block h2 {
+      font-weight: 300;
+      font-size: 1.8rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    .text-block p {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    /* ── IMAGES ── */
+    .feature-img-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 10px;
+      position: relative;
+    }
+
+    .feature-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: grayscale(20%) brightness(0.9);
+    }
+
+    /* ── EQUIPMENT LIST ── */
+    .gear-list {
+      list-style: none;
+      margin-top: 30px;
+    }
+
+    .gear-item {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+
+    .gear-item span:first-child { color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; }
+    .gear-item span:last-child { color: var(--text); font-weight: 300; }
+
+    @media (max-width: 900px) {
+      .section { grid-template-columns: 1fr; gap: 40px; }
+      .content-wrap { width: 90%; }
+      .text-block h2 { font-size: 1.4rem; }
+    }
+
+    footer { border-top: 1px solid var(--border); padding: 30px 0; width: 80%; margin: 0 auto; }
+    .footer-text { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html" style="text-decoration:none;color:inherit;">Sean <b>Makin</b></a>
+  <nav>
+    <a href="index.html">Portfolio</a>
+    <a href="astro.html">Astrophotography</a>
+    <a href="about.html" style="color:var(--text);">About</a>
+    <a href="mailto:you@email.com">Contact</a>
+  </nav>
+</header>
+
+<div class="content-wrap">
+  
+  <!-- Section: Me -->
+  <div class="section">
+    <div class="feature-img-wrap">
+      <img src="images/me.jpg" alt="Sean Makin" class="feature-img" />
+    </div>
+    <div class="text-block">
+      <span class="meta-label">Identity</span>
+      <h2>Capturing the Southern Skies</h2>
+      <p>
+        I am a photographer based in Western Australia, focusing on the intersection of vast landscapes 
+        and the intricate details of the cosmos. Living under some of the world's darkest skies, 
+        I aim to bridge the gap between our terrestrial home and the deep-sky objects above.
+      </p>
+      <p>
+        Beyond the lens, I manage my own home server environments and custom telemetry stacks to monitor 
+        observatory conditions, ensuring every sub-exposure is captured at peak precision.
+      </p>
+    </div>
+  </div>
+
+  <!-- Section: Gear -->
+  <div class="section">
+    <div class="text-block">
+      <span class="meta-label">Technical Stack</span>
+      <h2>The Observatory Gear</h2>
+      <p>
+        Reliability and optical clarity are paramount for long-exposure deep sky imaging. My current 
+        setup is built around high-performance refractors and a robust automation stack.
+      </p>
+      
+      <div class="gear-list">
+        <div class="gear-item"><span>Primary Refractor</span><span>Sky-Watcher Esprit 100</span></div>
+        <div class="gear-item"><span>Wide Field</span><span>William Optics RedCat 51</span></div>
+        <div class="gear-item"><span>Management</span><span>Unraid (MakNAS)</span></div>
+        <div class="gear-item"><span>Telemetry</span><span>Python, InfluxDB & Grafana</span></div>
+      </div>
+    </div>
+    <div class="feature-img-wrap">
+      <img src="images/telescope.jpg" alt="Astrophotography Setup" class="feature-img" />
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-text">© Sean Makin</span>
+</footer>
+
+</body>
+</html>
