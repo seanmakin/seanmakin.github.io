@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Makin Photography</title>
+  <title>Sean Makin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400&display=swap" rel="stylesheet" />
@@ -301,7 +301,7 @@
 <body>
  
 <header>
-  <div class="logo">Makin <b>Photography</b></div>
+  <div class="logo">Sean <b>Makin</b></div>
   <nav>
     <a href="mailto:you@email.com">Contact</a>
     <a href="https://www.flickr.com/photos/makinphotography/" target="_blank" rel="noopener" aria-label="Flickr" class="nav-icon">
@@ -323,7 +323,6 @@
 <div id="gallery-wrap">
   <div class="gallery-meta">
     <span class="gallery-label">Portfolio</span>
-    <span class="gallery-count" id="count-label"></span>
   </div>
   <div id="empty-state">
     <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
@@ -338,7 +337,7 @@
 </div>
  
 <footer>
-  <span class="footer-text">© Makin Photography</span>
+  <span class="footer-text">© Sean Makin</span>
 </footer>
  
 <div class="lightbox" id="lightbox">
@@ -375,14 +374,11 @@
  
   // ── BUILD GRID ──────────────────────────────────────────────
   const grid       = document.getElementById('grid');
-  const countLabel = document.getElementById('count-label');
   const emptyState = document.getElementById('empty-state');
  
   if (PHOTOS.length === 0) {
     emptyState.classList.add('show');
-    countLabel.textContent = '0 photos';
   } else {
-    countLabel.textContent = `${PHOTOS.length} photo${PHOTOS.length !== 1 ? 's' : ''}`;
  
     PHOTOS.forEach(({ file, title }, i) => {
       const src  = IMAGE_DIR + file;
