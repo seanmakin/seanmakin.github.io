@@ -48,7 +48,7 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 200;
-      padding: 26px 10%; /* Aligned with 80% width content */
+      padding: 26px 10%; 
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -84,7 +84,7 @@
     }
     .nav-icon:hover { color: var(--text); }
 
-    /* ── GALLERY ── */
+    /* ── GALLERY WRAPPER (80% Width) ── */
     #gallery-wrap { 
       padding: 120px 0 100px; 
       width: 80%;       
@@ -105,11 +105,12 @@
       color: var(--text-dim);
     }
 
-    /* ── GRID ── */
+    /* ── GRID SYSTEM ── */
     .grid { 
       display: grid;
       grid-template-columns: repeat(3, 1fr); 
-      gap: 8px; 
+      grid-auto-flow: dense; 
+      gap: 12px; 
     }
 
     .grid-item {
@@ -117,13 +118,22 @@
       overflow: hidden;
       cursor: pointer;
       background: var(--surface);
+      aspect-ratio: 4 / 3; /* Reserved space to prevent collapsing */
       opacity: 0;
       transform: translateY(12px);
       transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
     }
 
-    /* Wide logic for columns */
-    .grid-item.wide { grid-column: span 2; }
+    .grid-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Wide images span 2 columns */
+    .grid-item.wide { 
+      grid-column: span 2; 
+      aspect-ratio: 2 / 1; 
+    }
 
     @media (max-width: 860px) { 
       .grid { grid-template-columns: repeat(2, 1fr); } 
@@ -132,7 +142,7 @@
 
     @media (max-width: 500px) { 
       .grid { grid-template-columns: 1fr; } 
-      .grid-item.wide { grid-column: span 1; }
+      .grid-item.wide { grid-column: span 1; aspect-ratio: 4 / 3; }
       header { padding: 20px 5%; }
       #gallery-wrap { width: 90%; }
     }
@@ -165,7 +175,7 @@
       color: var(--text);
     }
 
-    /* ── LIGHTBOX ── */
+    /* ── LIGHTBOX (Increased Viewport) ── */
     .lightbox {
       position: fixed;
       inset: 0;
@@ -236,7 +246,7 @@
     .lb-nav.prev { left: 20px; }
     .lb-nav.next { right: 20px; }
 
-    /* ── FOOTER ── */
+    /* ── FOOTER (80% Width) ── */
     footer {
       border-top: 1px solid var(--border);
       padding: 30px 0;
@@ -311,10 +321,10 @@
   const grid = document.getElementById('grid');
 
   PHOTOS.forEach(({ file, title, wide }, i) => {
-    const src = IMAGE_DIR + file;
+    // encodeURIComponent handles spaces and special characters in filenames
+    const src = IMAGE_DIR + encodeURIComponent(file);
     const item = document.createElement('div');
     
-    // Fixed: Properly check 'wide' property from loop
     item.className = wide ? 'grid-item wide' : 'grid-item';
     item.dataset.idx = i;
 
@@ -325,7 +335,10 @@
     item.addEventListener('click', () => openLightbox(i));
     grid.appendChild(item);
 
-    setTimeout(() => requestAnimationFrame(() => item.classList.add('visible')), (i % 3) * 65 + 20);
+    // Fade-in animation
+    setTimeout(() => {
+      requestAnimationFrame(() => item.classList.add('visible'));
+    }, (i % 3) * 65 + 50);
   });
 
   // Lightbox Logic
@@ -349,7 +362,8 @@
 
   function showPhoto() {
     const { file, title } = PHOTOS[lbIndex];
-    lbImg.src = IMAGE_DIR + file;
+    // Encode here as well to ensure lightbox images load
+    lbImg.src = IMAGE_DIR + encodeURIComponent(file);
     lbCaption.textContent = title;
     lbCounter.textContent = `${lbIndex + 1} / ${PHOTOS.length}`;
   }
@@ -358,6 +372,12 @@
   document.getElementById('lb-prev').addEventListener('click', () => { lbIndex = (lbIndex - 1 + PHOTOS.length) % PHOTOS.length; showPhoto(); });
   document.getElementById('lb-next').addEventListener('click', () => { lbIndex = (lbIndex + 1) % PHOTOS.length; showPhoto(); });
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + PHOTOS.length) % PHOTOS.length; showPhoto(); }
+    if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % PHOTOS.length; showPhoto(); }
+  });
 </script>
 </body>
 </html>
