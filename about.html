@@ -37,6 +37,7 @@
       opacity: 0.025;
       pointer-events: none;
       z-index: 9999;
+      overflow-y: scroll; /* Forces scrollbar gutter to always exist */
     }
 
     /* ── HEADER ── */
@@ -49,11 +50,17 @@
       align-items: center;
       justify-content: space-between;
       background: linear-gradient(to bottom, rgba(10,10,10,0.97) 55%, transparent);
+      height: 80px; /* Explicit height ensures no movement */
     }
-
+    
     .logo {
-      font-weight: 200; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase;
-      text-decoration: none; color: inherit;
+      font-weight: 200; 
+      font-size: 1rem; 
+      letter-spacing: 0.28em; 
+      text-transform: uppercase;
+      text-decoration: none; 
+      color: inherit;
+      line-height: 1; /* Prevents text-box height variance */
     }
     .logo b { font-weight: 400; letter-spacing: 0.2em; }
 
