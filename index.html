@@ -112,13 +112,15 @@
     }
  
     /* masonry */
-    .grid { columns: 3; column-gap: 4px; }
-    @media (max-width: 860px) { .grid { columns: 2; } }
-    @media (max-width: 500px) { .grid { columns: 1; } }
- 
+    /* ── UPDATED GRID ── */
+    .grid { 
+      display: grid;
+      /* Creates 3 equal columns */
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 8px; /* Slightly more gap for better definition */
+    }
+    
     .grid-item {
-      break-inside: avoid;
-      margin-bottom: 4px;
       position: relative;
       overflow: hidden;
       cursor: pointer;
@@ -127,33 +129,31 @@
       transform: translateY(12px);
       transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
     }
-    .grid-item.visible { opacity: 1; transform: translateY(0); }
- 
+    
+    /* ── WIDE IMAGE CLASS ── */
+    /* This makes the item span across 2 columns */
+    .grid-item.wide {
+      grid-column: span 2;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 860px) { 
+      .grid { grid-template-columns: repeat(2, 1fr); } 
+      .grid-item.wide { grid-column: span 2; } /* Stays wide */
+    }
+    
+    @media (max-width: 500px) { 
+      .grid { grid-template-columns: 1fr; } 
+      .grid-item.wide { grid-column: span 1; } /* Stacked on mobile */
+    }
+    
     .grid-item img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover; /* Ensures images fill the span area nicely */
       transition: transform 0.65s var(--ease), filter 0.35s;
       filter: brightness(0.88) saturate(0.88);
-    }
-    .grid-item:hover img { transform: scale(1.03); filter: brightness(1) saturate(1); }
- 
-    .grid-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(5,5,5,0.68) 0%, transparent 46%);
-      opacity: 0;
-      transition: opacity 0.3s;
-      display: flex;
-      align-items: flex-end;
-      padding: 14px 16px;
-    }
-    .grid-item:hover .grid-overlay { opacity: 1; }
-    .grid-overlay span {
-      font-size: 0.85rem;
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      color: var(--text);
     }
  
     /* ── EMPTY STATE ── */
@@ -373,16 +373,16 @@
     { file: "DSC_0795-Edit 3000px.jpg", title: "Canal" },
     { file: "DSC_5583-Edit 3000px.jpg", title: "Withered" },
     { file: "DSC_6096-Edit 3000px.jpg", title: "Sticks" },
-    { file: "DSC_6266-Pano-Edit 3000px.jpg", title: "Over The Hills" },
+    { file: "DSC_6266-Pano-Edit 3000px.jpg", title: "Over The Hills", wide: true },
     { file: "DSC_6906-Edit 3000px.jpg", title: "Tall" },
     { file: "DSC_6978-Edit 3000px.jpg", title: "Kermits" },
     { file: "DSC_7135-Edit 3000px.jpg", title: "Sugarloaf" },
     { file: "DSC_7179-Edit 3000px.jpg", title: "Awakening" },
-    { file: "DSC_7534-Pano-Edit 3000px.jpg", title: "All That Glitters Is Gold" },
+    { file: "DSC_7534-Pano-Edit 3000px.jpg", title: "All That Glitters Is Gold", wide: true },
     { file: "DSC_7940-Edit 3000px.jpg", title: "The Core" },
     { file: "DSC_9011-Edit 3000px.jpg", title: "Pressure" },
     { file: "DSC0264-Edit 3000px.jpg", title: "Precarious" },
-    { file: "DSC8770-Pano 3000px.jpg", title: "Lonesome" },
+    { file: "DSC8770-Pano 3000px.jpg", title: "Lonesome", wide: true },
     { file: "DSC9334-Edit 3000px.jpg", title: "Misty Mountains" },
     // { file: "DSC_0003.jpg", title: "" },
     // { file: "DSC_0003.jpg", title: "" },
@@ -408,6 +408,8 @@
       const src  = IMAGE_DIR + file;
       const item = document.createElement('div');
       item.className   = 'grid-item';
+      // Add 'wide' class if the property exists
+      item.className = wide ? 'grid-item wide' : 'grid-item'; 
       item.dataset.idx = i;
  
       item.innerHTML = `
