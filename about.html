@@ -10,7 +10,6 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    
     :root {
       --bg:        #0a0a0a;
       --surface:   #111111;
@@ -54,6 +53,7 @@
 
     .logo {
       font-weight: 200; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase;
+      text-decoration: none; color: inherit;
     }
     .logo b { font-weight: 400; letter-spacing: 0.2em; }
 
@@ -63,7 +63,10 @@
       text-transform: uppercase; color: var(--text-dim);
       text-decoration: none; transition: color 0.25s;
     }
-    nav a:hover { color: var(--text); }
+    nav a:hover, nav a.active { color: var(--text); }
+
+    .nav-icon { display: flex; align-items: center; color: var(--text-dim); transition: color 0.25s; }
+    .nav-icon:hover { color: var(--text); }
 
     /* ── CONTENT WRAPPER ── */
     .content-wrap { 
@@ -86,14 +89,6 @@
       text-transform: uppercase; color: var(--text-dim);
       margin-bottom: 24px;
       display: block;
-    }
-
-    .text-block h2 {
-      font-weight: 300;
-      font-size: 1.8rem;
-      letter-spacing: 0.05em;
-      margin-bottom: 30px;
-      color: #fff;
     }
 
     .text-block p {
@@ -134,12 +129,15 @@
     }
 
     .gear-item span:first-child { color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; }
-    .gear-item span:last-child { color: var(--text); font-weight: 300; }
+    .gear-item span:last-child { color: var(--text); font-weight: 300; text-align: right; margin-left: 20px; }
+
+    @media (max-width: 1100px) {
+      .section { gap: 40px; }
+    }
 
     @media (max-width: 900px) {
-      .section { grid-template-columns: 1fr; gap: 40px; }
-      .content-wrap { width: 90%; }
-      .text-block h2 { font-size: 1.4rem; }
+      .section { grid-template-columns: 1fr; gap: 40px; margin-bottom: 80px; }
+      .content-wrap { width: 90%; padding-top: 120px; }
     }
 
     footer { border-top: 1px solid var(--border); padding: 30px 0; width: 80%; margin: 0 auto; }
@@ -149,17 +147,18 @@
 <body>
 
 <header>
-  <a class="logo" href="index.html" style="text-decoration:none;color:inherit;">Sean <b>Makin</b></a>
+  <a class="logo" href="index.html">Sean <b>Makin</b></a>
   <nav>
     <a href="index.html">Portfolio</a>
     <a href="astro.html">Astrophotography</a>
-    <a href="about.html" style="color:var(--text);">About</a>
+    <a href="about.html" class="active">About</a>
     <a href="mailto:you@email.com">Contact</a>
     <a href="https://www.flickr.com/photos/makinphotography/" target="_blank" rel="noopener" class="nav-icon" aria-label="Flickr">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="7" cy="12" r="4.5"/><circle cx="17" cy="12" r="4.5"/></svg>
     </a>
     <a href="https://www.instagram.com/sean.makin/" target="_blank" rel="noopener" class="nav-icon" aria-label="Instagram">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none"/></svg>
+    </a>
   </nav>
 </header>
 
@@ -174,10 +173,11 @@
       <span class="meta-label">About</span>
       <p>
         I am an astro and landscape photographer based in Perth, Western Australia, focusing on the intersection of vast landscapes 
-        and the details of the cosmos. I am fortunate enough to have easy access to some of the world's darkest skies.      </p>
+        and the details of the cosmos. I am fortunate enough to have easy access to some of the world's darkest skies.      
+      </p>
       <p>
         Beyond the lens, I am a geologist, avid hiker, camper and traveller.
-        
+        <br><br>
         I am also an active member of the Astronomical Society of Western Australia.
       </p>
     </div>
@@ -201,11 +201,10 @@
         <div class="gear-item"><span>Narrowband Filters</span><span>Antlia 3nm SiiHaOiii</span></div>
         <div class="gear-item"><span>Rotator</span><span>Wanderer Astro Mini V2</span></div>
         <div class="gear-item"><span>Guiding</span><span>ZWO OAG-L</span></div>
-        <div class="gear-item"><span>Guide Camera </span><span>ZWO ASI220M</span></div>
+        <div class="gear-item"><span>Guide Camera</span><span>ZWO ASI220M</span></div>
         <div class="gear-item"><span>Control</span><span>MeLe Quieter 3C</span></div>
         <div class="gear-item"><span>Power</span><span>Pegasus Pocket Powerbox Advanced</span></div>
         <div class="gear-item"><span>Accessories</span><span>Astromi.ch MGPBox</span></div>
-
       </div>
     </div>
     <div class="feature-img-wrap">
