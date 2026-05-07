@@ -37,7 +37,7 @@
       opacity: 0.025;
       pointer-events: none;
       z-index: 9999;
-      overflow-y: scroll; /* Forces scrollbar gutter to always exist */
+      overflow-y: scroll;
     }
 
     /* ── HEADER ── */
@@ -50,7 +50,7 @@
       align-items: center;
       justify-content: space-between;
       background: linear-gradient(to bottom, rgba(10,10,10,0.97) 55%, transparent);
-      height: 80px; /* Explicit height ensures no movement */
+      height: 80px;
     }
     
     .logo {
@@ -60,7 +60,7 @@
       text-transform: uppercase;
       text-decoration: none; 
       color: inherit;
-      line-height: 1; /* Prevents text-box height variance */
+      line-height: 1;
     }
     .logo b { font-weight: 400; letter-spacing: 0.2em; }
 
@@ -97,8 +97,8 @@
     .grid-item {
       display: block;
       position: relative;
-      padding-bottom: 12px; /* Gap between stacked images */
-      break-inside: avoid; /* Prevents images from splitting across columns */
+      padding-bottom: 12px;
+      break-inside: avoid;
       cursor: pointer;
       background: var(--bg);
       opacity: 0;
@@ -168,6 +168,14 @@
     .lb-caption { font-size: 0.9rem; font-weight: 300; letter-spacing: 0.1em; color: var(--text-dim); }
     .lb-counter { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-dim); opacity: 0.6; }
 
+    .lb-details {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--text-dim);
+      opacity: 0.7;
+      text-transform: uppercase;
+    }
+
     .lb-close {
       position: fixed; top: 25px; right: 30px;
       background: none; border: none; color: var(--text-dim);
@@ -224,9 +232,11 @@
     <img class="lb-img" id="lb-img" src="" alt="" />
     <div class="lb-caption" id="lb-caption"></div>
     <div class="lb-counter" id="lb-counter"></div>
+    <div class="lb-details" id="lb-details"></div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.cjs"></script>
 <script>
   const PHOTOS = [
     { file: "DJI_0065-1 3000px.jpg", title: "Tendrils" },
@@ -245,7 +255,6 @@
     { file: "DSC8770-Pano 3000px.jpg", title: "Lonesome" },
     { file: "DSC9334-Edit 3000px.jpg", title: "Misty Mountains" },
     { file: "DSC_0795-Edit 3000px.jpg", title: "Canal" }
-  
   ];
 
   const IMAGE_DIR = "images/";
@@ -263,7 +272,6 @@
     item.addEventListener('click', () => openLightbox(i));
     grid.appendChild(item);
 
-    // Fade in animation
     setTimeout(() => {
       requestAnimationFrame(() => item.classList.add('visible'));
     }, (i % 3) * 80 + 50);
@@ -272,9 +280,10 @@
   // Lightbox Logic
   let lbIndex = 0;
   const lightbox = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img');
+  const lbImg    = document.getElementById('lb-img');
   const lbCaption = document.getElementById('lb-caption');
   const lbCounter = document.getElementById('lb-counter');
+  const lbDetails = document.getElementById('lb-details');
 
   function openLightbox(idx) {
     lbIndex = idx;
@@ -288,11 +297,27 @@
     document.body.style.overflow = '';
   }
 
-  function showPhoto() {
+  async function showPhoto() {
     const { file, title } = PHOTOS[lbIndex];
-    lbImg.src = IMAGE_DIR + encodeURIComponent(file);
+    const src = IMAGE_DIR + encodeURIComponent(file);
+    lbImg.src = src;
     lbCaption.textContent = title;
     lbCounter.textContent = `${lbIndex + 1} / ${PHOTOS.length}`;
+    lbDetails.textContent = 'Loading…';
+
+    try {
+      const exif = await exifr.parse(src, ['Make', 'Model', 'LensModel', 'ExposureTime', 'FNumber', 'ISO', 'FocalLength']);
+      const parts = [];
+      if (exif.Make || exif.Model)   parts.push(`${exif.Make ?? ''} ${exif.Model ?? ''}`.trim());
+      if (exif.LensModel)            parts.push(exif.LensModel);
+      if (exif.FocalLength)          parts.push(`${exif.FocalLength}mm`);
+      if (exif.ExposureTime)         parts.push(exif.ExposureTime < 1 ? `1/${Math.round(1 / exif.ExposureTime)}s` : `${exif.ExposureTime}s`);
+      if (exif.FNumber)              parts.push(`f/${exif.FNumber}`);
+      if (exif.ISO)                  parts.push(`ISO ${exif.ISO}`);
+      lbDetails.textContent = parts.join('  ·  ');
+    } catch {
+      lbDetails.textContent = '';
+    }
   }
 
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
@@ -303,7 +328,7 @@
   document.addEventListener('keydown', e => {
     if (!lightbox.classList.contains('open')) return;
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + PHOTOS.length) % PHOTOS.length; showPhoto(); }
+    if (e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + PHOTOS.length) % PHOTOS.length; showPhoto(); }
     if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % PHOTOS.length; showPhoto(); }
   });
 </script>
