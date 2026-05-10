@@ -631,11 +631,24 @@
     lbCounter.textContent = `${lbIndex + 1} / ${PHOTOS.length}`;
     lbDetails.textContent = 'Loading…';
 
+    const CAMERA_ALIASES = {
+      'NIKON CORPORATION NIKON D610': 'Nikon D610',
+      'DJI FC3170': 'DJI Mavic Air 2',
+    };
+    const LENS_ALIASES = {
+      '16.0-35.0 mm f/4.0':          'Nikon 16-35mm F/4G',
+      '70.0-200.0 mm f/4.0':         'Nikon 70-200mm F/4G',
+      'Tokina AT-X 17-35 F4 PRO FX': 'Tokina 17-35mm F4 PRO',
+    };
+
     try {
       const exif = await exifr.parse(src, ['Make', 'Model', 'LensModel', 'ExposureTime', 'FNumber', 'ISO', 'FocalLength']);
       const parts = [];
-      if (exif.Make || exif.Model)   parts.push(`${exif.Make ?? ''} ${exif.Model ?? ''}`.trim());
-      if (exif.LensModel)            parts.push(exif.LensModel);
+      if (exif.Make || exif.Model) {
+        const rawCamera = `${exif.Make ?? ''} ${exif.Model ?? ''}`.trim();
+        parts.push(CAMERA_ALIASES[rawCamera] ?? rawCamera);
+      }
+      if (exif.LensModel)            parts.push(LENS_ALIASES[exif.LensModel] ?? exif.LensModel);
       if (exif.FocalLength)          parts.push(`${exif.FocalLength}mm`);
       if (exif.ExposureTime)         parts.push(exif.ExposureTime < 1 ? `1/${Math.round(1 / exif.ExposureTime)}s` : `${exif.ExposureTime}s`);
       if (exif.FNumber)              parts.push(`f/${exif.FNumber}`);
