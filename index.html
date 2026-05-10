@@ -309,7 +309,7 @@
 </div>
 
 <footer>
-  <span class="footer-text">© Sean Makin</span>
+  <span class="footer-text">© <span class="copyright-year"></span> Sean Makin</span>
 </footer>
 
 <div class="lightbox" id="lightbox">
@@ -326,6 +326,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.cjs"></script>
 <script>
+  document.querySelectorAll('.copyright-year').forEach(el => {
+    el.textContent = String(new Date().getFullYear());
+  });
+
   const headerEl = document.querySelector('header');
   const menuToggle = document.getElementById('menu-toggle');
   const siteNav = document.getElementById('site-nav');
