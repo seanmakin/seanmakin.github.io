@@ -587,13 +587,17 @@
   const IMAGE_DIR = "images/";
   const grid = document.getElementById('grid');
 
+  function thumbFile(file) {
+    return file.replace(/\.[^.]+$/, '.thumb.webp');
+  }
+
   PHOTOS.forEach(({ file, title }, i) => {
     const item = document.createElement('div');
     item.className = 'grid-item';
-    const src = IMAGE_DIR + encodeURIComponent(file);
+    const thumb = IMAGE_DIR + encodeURIComponent(thumbFile(file));
 
     item.innerHTML = `
-      <img src="${src}" alt="${title}" loading="lazy" />
+      <img src="${thumb}" alt="${title}" loading="lazy" />
       <div class="grid-overlay"><span>${title}</span></div>`;
 
     item.addEventListener('click', () => openLightbox(i));
